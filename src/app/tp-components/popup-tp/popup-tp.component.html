@@ -1,0 +1,89 @@
+<mat-card>
+    <mat-card-header>
+        <mat-card-title>{{ isEditing ? 'Modifier TP' : 'Ajouter TP' }}</mat-card-title>
+    </mat-card-header>
+    <mat-card-content class="scrollable-content">
+        <form [formGroup]="tpForm">
+
+            <mat-form-field appearance="fill" style="margin-right: 110px;">
+                <mat-label>Type</mat-label>
+                <mat-select formControlName="type">
+                    <mat-option *ngFor="let type of tpTypes" [value]="type">{{ type }}</mat-option>
+                </mat-select>
+            </mat-form-field>
+
+            <mat-form-field appearance="fill">
+                <mat-label>Jour TP</mat-label>
+                <input matInput formControlName="jourTp" />
+            </mat-form-field>
+
+            <mat-form-field appearance="fill">
+                <mat-label>Professeur</mat-label>
+                <mat-select formControlName="prof">
+                    <mat-option *ngFor="let prof of users" [value]="prof">
+                        {{ prof.firstName }}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+
+            <mat-form-field appearance="fill">
+                <mat-label>Salle TP</mat-label>
+                <mat-select formControlName="salleTp">
+                    <mat-option *ngFor="let salleTp of sallesTps" [value]="salleTp">
+                        {{ salleTp.numero }}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+
+            <mat-form-field appearance="fill" style="margin-right: 110px;">
+                <mat-label>Niveau Scolaire</mat-label>
+                <mat-select formControlName="niveauScolaire">
+                    <mat-option *ngFor="let niveauScolaire of niveauScolaires" [value]="niveauScolaire">{{ niveauScolaire }}</mat-option>
+                </mat-select>
+            </mat-form-field>
+
+            <div formArrayName="produits">
+                <div *ngFor="let produit of produitsFormArray.controls; let i = index" [formGroupName]="i">
+                    <mat-form-field appearance="fill">
+                        <mat-label>Produit</mat-label>
+                        <mat-select formControlName="produit">
+                            <mat-option *ngFor="let prod of produits" [value]="prod">
+                                {{ prod.designation }}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                    <mat-form-field appearance="fill">
+                        <mat-label>Quantité Ajoutée</mat-label>
+                        <input matInput formControlName="quantite" type="number" />
+                    </mat-form-field>
+                    <button mat-button color="warn" (click)="removeProduit(i)">Supprimer</button>
+                </div>
+                <button mat-button color="primary" (click)="addProduit()">Ajouter Produit</button>
+            </div>
+
+            <div formArrayName="preparations">
+                <div *ngFor="let preparation of preparationsFormArray.controls; let i = index" [formGroupName]="i">
+                    <mat-form-field appearance="fill">
+                        <mat-label>Preparation</mat-label>
+                        <mat-select formControlName="preparation">
+                            <mat-option *ngFor="let prep of preparations" [value]="prep">
+                                {{ prep.designation }}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                    <mat-form-field appearance="fill">
+                        <mat-label>Quantité Utilisée</mat-label>
+                        <input matInput formControlName="quantite" type="number" />
+                    </mat-form-field>
+                    <button mat-button color="warn" (click)="removePreparation(i)">Supprimer</button>
+                </div>
+                <button mat-button color="primary" (click)="addPreparation()">Ajouter Preparation</button>
+            </div>
+
+            <mat-card-actions>
+                <button mat-raised-button color="primary" (click)="submit()">Enregistrer</button>
+                <button mat-raised-button (click)="close()">Annuler</button>
+            </mat-card-actions>
+        </form>
+    </mat-card-content>
+</mat-card>
